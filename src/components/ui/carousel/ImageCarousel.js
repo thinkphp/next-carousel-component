@@ -1,5 +1,7 @@
 'use client';
-import React, { useState, useRef, useEffect } from 'react';
+
+import React, { useState, useRef } from 'react';
+import Image from 'next/image';
 
 const ImageCarousel = () => {
   const [currentPosition, setCurrentPosition] = useState(0);
@@ -14,9 +16,9 @@ const ImageCarousel = () => {
     { src: '/images/image3.jpg', alt: 'Image 3' },
     { src: '/images/image4.jpg', alt: 'Image 4' },
     { src: '/images/image5.jpg', alt: 'Image 5' },
-        { src: '/images/image6.jpg', alt: 'Image 6' },
-            { src: '/images/image7.jpg', alt: 'Image 7' },
-                { src: '/images/image8.jpg', alt: 'Image 8' },
+    { src: '/images/image6.jpg', alt: 'Image 6' },
+    { src: '/images/image7.jpg', alt: 'Image 7' },
+    { src: '/images/image8.jpg', alt: 'Image 8' },
   ];
 
   const imageWidth = 210; // Image width + margin
@@ -66,13 +68,19 @@ const ImageCarousel = () => {
             style={{ transform: `translateX(${currentPosition}px)` }}
           >
             {images.map((image, index) => (
-              <img
+              <div
                 key={index}
-                src={image.src}
-                alt={image.alt}
+                className="relative w-[200px] h-[200px] flex-shrink-0 mr-[10px] cursor-pointer transition-transform duration-300 hover:scale-110"
                 onClick={() => openModal(image)}
-                className="w-[200px] h-[200px] flex-shrink-0 mr-[10px] object-cover cursor-pointer transition-transform duration-300 hover:scale-110"
-              />
+              >
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  fill
+                  sizes="200px"
+                  className="object-cover"
+                />
+              </div>
             ))}
           </div>
         </div>
@@ -98,12 +106,15 @@ const ImageCarousel = () => {
           >
             &times;
           </span>
-          <img
-            src={selectedImage.src.replace('200/200', '400/400')}
-            alt={selectedImage.alt}
-            className="max-w-[90%] max-h-[90%] transform scale-100 opacity-100 transition-all duration-300"
-            onClick={e => e.stopPropagation()}
-          />
+          <div className="relative w-[90%] h-[90%] max-w-[800px] max-h-[800px]" onClick={e => e.stopPropagation()}>
+            <Image
+              src={selectedImage.src}
+              alt={selectedImage.alt}
+              fill
+              sizes="(max-width: 800px) 90vw, 800px"
+              className="object-contain"
+            />
+          </div>
         </div>
       )}
     </div>
